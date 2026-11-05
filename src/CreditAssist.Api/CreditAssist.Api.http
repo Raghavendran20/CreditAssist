@@ -1,0 +1,8 @@
+@host = http://localhost:5226
+
+POST {{host}}/api/ai/ask
+Content-Type: application/json
+
+{
+  "question": "What is a debt-to-income ratio and what is a safe limit for a personal loan?"
+}

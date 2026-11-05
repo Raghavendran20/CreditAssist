@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CreditAssist.AI/CreditAssist.AI.csproj" />
+    <Project Path="src/CreditAssist.Api/CreditAssist.Api.csproj" />
+    <Project Path="src/CreditAssist.Core/CreditAssist.Core.csproj" />
+    <Project Path="src/CreditAssist.Infrastructure/CreditAssist.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CreditAssist.Tests/CreditAssist.Tests.csproj" />
+  </Folder>
+</Solution>
