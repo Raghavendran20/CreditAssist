@@ -1,8 +1,29 @@
 @host = http://localhost:5226
 
+### 1. Simple question
 POST {{host}}/api/ai/ask
 Content-Type: application/json
 
 {
-  "question": "What is a debt-to-income ratio and what is a safe limit for a personal loan?"
+  "question": "What is FOIR?"
+}
+
+### 2. Chat with history (it should remember the earlier context)
+POST {{host}}/api/ai/chat
+Content-Type: application/json
+
+{
+  "messages": [
+    { "role": "user", "content": "My monthly salary is ₹80,000." },
+    { "role": "assistant", "content": "Noted. Your monthly salary is ₹80,000." },
+    { "role": "user", "content": "My EMIs are ₹30,000. What is my FOIR?" }
+  ]
+}
+
+### 3. Empty question (should return 400)
+POST {{host}}/api/ai/ask
+Content-Type: application/json
+
+{
+  "question": ""
 }
