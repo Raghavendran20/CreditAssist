@@ -104,3 +104,23 @@ GET {{host}}/api/ai/policy/search?q=Can a freelancer get a personal loan?
 
 ### 15. Search
 GET {{host}}/api/ai/policy/search?q=My customer missed a few EMI payments recently
+
+### 16. Upload the sample policy PDF
+POST {{host}}/api/ai/documents/upload
+Content-Type: multipart/form-data; boundary=CreditAssistBoundary
+
+--CreditAssistBoundary
+Content-Disposition: form-data; name="file"; filename="SampleBank_PersonalLoan_Policy.pdf"
+Content-Type: application/pdf
+
+< ../../samples/SampleBank_PersonalLoan_Policy.pdf
+--CreditAssistBoundary--
+
+### 17. Only the PDF has this: foreclosure charges
+GET {{host}}/api/ai/policy/search?q=What is the penalty if I close my loan early?
+
+### 18. Only the PDF has this: top-up loans
+GET {{host}}/api/ai/policy/search?q=When can an existing customer get extra money on their loan?
+
+### 19. Only the PDF has this: approval authority
+GET {{host}}/api/ai/policy/search?q=Who must approve if FOIR is slightly above the limit?

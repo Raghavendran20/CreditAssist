@@ -73,7 +73,7 @@ public static class AiEndpoints
             });
         });
 
-        // 7. Semantic search over policy rules (now served by Qdrant)
+        // 7. Semantic search over policy rules + PDF chunks (Qdrant)
         group.MapGet("/policy/search", async (string q, IPolicySearch search, CancellationToken ct, int top = 3) =>
         {
             if (string.IsNullOrWhiteSpace(q))
@@ -82,14 +82,37 @@ public static class AiEndpoints
             return Results.Ok(await search.SearchAsync(q, Math.Clamp(top, 1, 10), ct));
         });
 
-        // 8. Load the sample policy rules into Qdrant (Day 8)
+        // 8. Load the 10 sample policy rules into Qdrant
         group.MapPost("/policy/reindex", async (IPolicyIndexer indexer, CancellationToken ct) =>
         {
             var count = await indexer.IndexAsync(PolicyData.Snippets, ct);
             return Results.Ok(new { indexed = count, collection = QdrantPolicyStore.CollectionName });
         });
 
-        return app;
+        // 9. Upload a policy PDF → extract, chunk, embed, store (Day 9)
+        group.MapPost("/documents/upload", async (IFormFile file, IDocumentIngestor ingestor, CancellationToken ct) =>
+        {
+            if (file is null || file.Length == 0)
+                return Results.BadRequest(new { error = "Please upload a PDF file." });
+            if (!file.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                return Results.BadRequest(new { error = "Only PDF files are supported." });
+            if (file.Length > 10 * 1024 * 1024)
+                return Results.BadRequest(new { error = "The file is larger than 10 MB." });
+
+            try
+            {
+                await using var stream = file.OpenReadStream();
+                var result = await ingestor.IngestPdfAsync(stream, Path.GetFileName(file.FileName), ct);
+                return Results.Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.BadRequest(new { error = ex.Message });
+            }
+        })
+        .DisableAntiforgery();
+
+        return app;   // ← always the LAST line of the method
     }
 }
 
