@@ -95,3 +95,12 @@ GET {{host}}/api/ai/policy/search?q=My customer missed a few EMI payments recent
 
 ### 12. Semantic search: top 1 only
 GET {{host}}/api/ai/policy/search?q=How much money can I borrow?&top=1
+
+### 13. Load policy rules into Qdrant
+POST {{host}}/api/ai/policy/reindex
+
+### 14. Search (now served by Qdrant)
+GET {{host}}/api/ai/policy/search?q=Can a freelancer get a personal loan?
+
+### 15. Search
+GET {{host}}/api/ai/policy/search?q=My customer missed a few EMI payments recently

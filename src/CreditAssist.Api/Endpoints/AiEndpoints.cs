@@ -1,3 +1,4 @@
+using CreditAssist.AI.Knowledge;
 using CreditAssist.Core.AI;
 using CreditAssist.Core.Applicants;
 using CreditAssist.Core.Knowledge;
@@ -60,7 +61,7 @@ public static class AiEndpoints
             return Results.Ok(await assistant.AskWithToolsAsync(req.Question, ct));
         });
 
-        // 6. See what an embedding looks like (Day 5)
+        // 6. See what an embedding looks like
         group.MapGet("/embed", async (string text, IEmbeddingGenerator<string, Embedding<float>> embedder, CancellationToken ct) =>
         {
             var vector = await embedder.GenerateVectorAsync(text, cancellationToken: ct);
@@ -72,13 +73,20 @@ public static class AiEndpoints
             });
         });
 
-        // 7. Semantic search over policy rules (Day 5)
+        // 7. Semantic search over policy rules (now served by Qdrant)
         group.MapGet("/policy/search", async (string q, IPolicySearch search, CancellationToken ct, int top = 3) =>
         {
             if (string.IsNullOrWhiteSpace(q))
                 return Results.BadRequest(new { error = "Query 'q' is required." });
 
             return Results.Ok(await search.SearchAsync(q, Math.Clamp(top, 1, 10), ct));
+        });
+
+        // 8. Load the sample policy rules into Qdrant (Day 8)
+        group.MapPost("/policy/reindex", async (IPolicyIndexer indexer, CancellationToken ct) =>
+        {
+            var count = await indexer.IndexAsync(PolicyData.Snippets, ct);
+            return Results.Ok(new { indexed = count, collection = QdrantPolicyStore.CollectionName });
         });
 
         return app;

@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddCreditAssistInfrastructure();
-builder.Services.AddCreditAssistAI();
+builder.Services.AddCreditAssistAI(builder.Configuration);   // Day 8: pass configuration
 
 // Allow the Angular dev server to call this API
 builder.Services.AddCors(options =>
