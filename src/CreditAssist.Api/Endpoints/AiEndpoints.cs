@@ -49,6 +49,15 @@ public static class AiEndpoints
             }
         });
 
+        // 5. Agent with tool calling (Day 4)
+        group.MapPost("/agent", async (AskRequest req, ICreditAssistant assistant, CancellationToken ct) =>
+        {
+            if (string.IsNullOrWhiteSpace(req.Question))
+                return Results.BadRequest(new { error = "Question is required." });
+
+            return Results.Ok(await assistant.AskWithToolsAsync(req.Question, ct));
+        });
+
         return app;
     }
 }

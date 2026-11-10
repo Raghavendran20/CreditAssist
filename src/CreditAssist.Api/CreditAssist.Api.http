@@ -59,3 +59,27 @@ Content-Type: application/json
   "employmentType": "Self-employed",
   "yearsInCurrentJob": 1
 }
+
+### 6. Agent: full affordability check (expect 3 tools)
+POST {{host}}/api/ai/agent
+Content-Type: application/json
+
+{
+  "question": "Can the applicant with PAN ABCDE1234F afford a ₹5,00,000 loan for 36 months at 12%? Include her existing EMIs."
+}
+
+### 7. Agent: EMI only (expect only CalculateEmi)
+POST {{host}}/api/ai/agent
+Content-Type: application/json
+
+{
+  "question": "What is the EMI for ₹10,00,000 at 10.5% for 60 months?"
+}
+
+### 8. Agent: unknown PAN (expect 'not found', no made-up data)
+POST {{host}}/api/ai/agent
+Content-Type: application/json
+
+{
+  "question": "Check loan eligibility for PAN ZZZZZ9999Z."
+}
