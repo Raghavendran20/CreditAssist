@@ -3,16 +3,26 @@ body {
   margin: 0;
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
   color: #1f2937;
-  background: #fff;
+  background: #f7f9fc;
 }
 .app-header {
   height: 64px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 28px;
   padding: 0 24px;
   background: #1f3a5f;
   color: #fff;
 }
 .app-header .logo { font-size: 20px; }
+.app-header nav { display: flex; gap: 6px; flex: 1; }
+.app-header nav a {
+  color: #cfdbe9;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.app-header nav a:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.app-header nav a.active { background: rgba(255, 255, 255, 0.16); color: #fff; }
 .app-header .tag { font-size: 13px; opacity: 0.75; }

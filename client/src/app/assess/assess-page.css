@@ -1,0 +1,78 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(340px, 1fr) minmax(360px, 1.1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+@media (max-width: 900px) { .page { grid-template-columns: 1fr; } }
+
+.panel { background: #fff; border: 1px solid #e3e8ef; border-radius: 14px; padding: 20px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; flex-wrap: wrap; }
+.panel-head h2 { margin: 0; font-size: 18px; color: #1f3a5f; }
+.samples { display: flex; gap: 8px; }
+.chip {
+  border: 1px solid #cfd6df; background: #f3f6fa; border-radius: 999px;
+  padding: 6px 12px; font-size: 13px; cursor: pointer;
+}
+.chip:hover { border-color: #2a7f8e; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; margin: 12px 0 18px; }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #4a5563; }
+.field.full { width: 100%; }
+.field input, .field select {
+  padding: 9px 11px; font-size: 14px; border: 1px solid #cfd6df; border-radius: 8px; outline: none; color: #1f2937;
+}
+.field input:focus, .field select:focus { border-color: #2a7f8e; }
+.field input.ng-invalid.ng-touched { border-color: #c0392b; }
+.err { color: #c0392b; }
+.hint { color: #8a94a3; }
+
+.primary {
+  width: 100%; padding: 12px; font-size: 15px; border: none; border-radius: 10px;
+  background: #2a7f8e; color: #fff; cursor: pointer;
+}
+.primary:disabled { background: #b5bcc6; cursor: default; }
+
+.placeholder { text-align: center; color: #6b7685; padding: 60px 20px; }
+.spinner {
+  width: 34px; height: 34px; margin: 0 auto 14px; border-radius: 50%;
+  border: 3px solid #e3e8ef; border-top-color: #2a7f8e; animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.alert { background: #fdecec; color: #9b1c1c; padding: 14px; border-radius: 10px; }
+
+.risk-card {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 20px; border-radius: 12px; color: #fff; margin-bottom: 16px;
+}
+.risk-card.low    { background: #1d8a52; }
+.risk-card.medium { background: #d98a0b; }
+.risk-card.high   { background: #c0392b; }
+.risk-label { font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.risk-name { font-size: 14px; opacity: 0.9; }
+
+.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.metric { background: #f3f6fa; border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; }
+.metric-label { font-size: 12px; color: #6b7685; }
+.metric-value { font-size: 22px; font-weight: 600; color: #1f2937; }
+.metric-value.bad { color: #c0392b; }
+
+.foir-bar { position: relative; height: 10px; background: #e3e8ef; border-radius: 6px; margin: 22px 0 6px; }
+.foir-fill { height: 100%; background: #1d8a52; border-radius: 6px; transition: width 0.4s; }
+.foir-fill.bad { background: #c0392b; }
+.foir-limit { position: absolute; top: -6px; bottom: -6px; width: 2px; background: #1f2937; }
+.foir-limit span { position: absolute; top: -18px; left: -24px; font-size: 11px; color: #4a5563; white-space: nowrap; }
+.source { font-size: 12px; color: #8a94a3; margin: 4px 0 0; }
+
+.lists { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+.lists h3 { font-size: 14px; margin: 0 0 6px; }
+.good-title { color: #1d8a52; }
+.bad-title { color: #c0392b; }
+.lists ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.5; }
+.muted { color: #8a94a3; list-style: none; margin-left: -18px; }
+
+.summary { margin-top: 18px; padding-top: 14px; border-top: 1px solid #e3e8ef; }
+.summary h3 { font-size: 14px; margin: 0 0 6px; color: #1f3a5f; }
+.summary p { margin: 0; font-size: 14px; line-height: 1.55; }

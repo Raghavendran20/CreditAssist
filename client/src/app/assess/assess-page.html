@@ -1,0 +1,109 @@
+<div class="page">
+  <!-- LEFT: form -->
+  <section class="panel form-panel">
+    <div class="panel-head">
+      <h2>Applicant details</h2>
+      <div class="samples">
+        <button type="button" class="chip" (click)="loadSample('strong')">Sample: strong</button>
+        <button type="button" class="chip" (click)="loadSample('risky')">Sample: risky</button>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label class="field full">
+        <span>Applicant name</span>
+        <input formControlName="name" placeholder="e.g. Priya Sharma">
+        @if (isInvalid('name')) { <small class="err">Name is required.</small> }
+      </label>
+
+      <div class="grid">
+        @for (f of numberFields; track f.key) {
+          <label class="field">
+            <span>{{ f.label }}</span>
+            <input type="number" [formControlName]="f.key" [min]="f.min ?? null" [max]="f.max ?? null" [step]="f.step ?? 1">
+            @if (isInvalid(f.key)) {
+              <small class="err">
+                Enter a valid value{{ f.max !== undefined ? ' (' + f.min + '–' + f.max + ')' : '' }}.
+              </small>
+            } @else if (f.hint) {
+              <small class="hint">{{ f.hint }}</small>
+            }
+          </label>
+        }
+
+        <label class="field">
+          <span>Employment type</span>
+          <select formControlName="employmentType">
+            <option value="Salaried">Salaried</option>
+            <option value="Self-employed">Self-employed</option>
+          </select>
+        </label>
+      </div>
+
+      <button type="submit" class="primary" [disabled]="loading()">
+        {{ loading() ? 'Assessing…' : 'Assess applicant' }}
+      </button>
+    </form>
+  </section>
+
+  <!-- RIGHT: result -->
+  <section class="panel result-panel">
+    @if (loading()) {
+      <div class="placeholder">
+        <div class="spinner"></div>
+        <p>C# is calculating EMI and FOIR, then the AI is assessing risk…</p>
+      </div>
+    } @else if (error()) {
+      <div class="alert">{{ error() }}</div>
+    } @else if (result(); as r) {
+      <div class="risk-card" [class]="'risk-card ' + riskClass()">
+        <span class="risk-label">{{ r.assessment.riskLevel }} risk</span>
+        <span class="risk-name">{{ form.controls.name.value }}</span>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <span class="metric-label">New EMI</span>
+          <span class="metric-value">{{ r.newEmi | currency:'INR':'symbol':'1.0-0' }}</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">FOIR</span>
+          <span class="metric-value" [class.bad]="foirOverLimit()">{{ r.foirPercent | number:'1.1-1' }}%</span>
+        </div>
+      </div>
+
+      <div class="foir-bar" title="FOIR vs bank limit">
+        <div class="foir-fill" [class.bad]="foirOverLimit()" [style.width.%]="foirBarWidth()"></div>
+        <div class="foir-limit" [style.left.%]="foirLimit"><span>limit {{ foirLimit }}%</span></div>
+      </div>
+      <p class="source">EMI and FOIR are calculated in C#, not by the AI.</p>
+
+      <div class="lists">
+        <div>
+          <h3 class="good-title">Strengths</h3>
+          <ul>
+            @for (s of r.assessment.strengths; track $index) { <li>{{ s }}</li> }
+            @empty { <li class="muted">None listed</li> }
+          </ul>
+        </div>
+        <div>
+          <h3 class="bad-title">Red flags</h3>
+          <ul>
+            @for (f of r.assessment.redFlags; track $index) { <li>{{ f }}</li> }
+            @empty { <li class="muted">None</li> }
+          </ul>
+        </div>
+      </div>
+
+      <div class="summary">
+        <h3>AI summary</h3>
+        <p>{{ r.assessment.summary }}</p>
+        <p class="source">AI advice only. The underwriter makes the final decision.</p>
+      </div>
+    } @else {
+      <div class="placeholder">
+        <p>Fill in the form or load a sample, then click <strong>Assess applicant</strong>.</p>
+      </div>
+    }
+  </section>
+</div>
