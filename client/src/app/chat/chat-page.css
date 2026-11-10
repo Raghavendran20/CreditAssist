@@ -1,0 +1,55 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e3e8ef;
+}
+.toggle { display: flex; gap: 8px; align-items: center; cursor: pointer; font-weight: 500; }
+.toggle small { color: #6b7685; font-weight: 400; }
+.link { background: none; border: none; color: #2a7f8e; cursor: pointer; font-size: 14px; }
+.link:disabled { color: #b5bcc6; cursor: default; }
+
+.messages { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 14px; }
+
+.empty { text-align: center; margin-top: 40px; color: #4a5563; }
+.empty h2 { color: #1f3a5f; margin-bottom: 4px; }
+.example {
+  display: block; width: 100%; max-width: 560px; margin: 8px auto; padding: 10px 14px;
+  text-align: left; background: #f3f6fa; border: 1px solid #e3e8ef; border-radius: 10px;
+  cursor: pointer; font-size: 14px; color: #1f2937;
+}
+.example:hover { border-color: #2a7f8e; background: #eef7f8; }
+
+.msg { display: flex; flex-direction: column; align-items: flex-start; max-width: 85%; }
+.msg.user { align-self: flex-end; align-items: flex-end; }
+.bubble {
+  padding: 10px 14px; border-radius: 14px; background: #f3f6fa; color: #1f2937;
+  white-space: pre-wrap; line-height: 1.5; font-size: 15px;
+}
+.msg.user .bubble { background: #1f3a5f; color: #fff; }
+.msg.error .bubble { background: #fdecec; color: #9b1c1c; }
+.typing { color: #6b7685; font-style: italic; }
+
+.tools { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tools-label { font-size: 12px; color: #6b7685; }
+.tools code { font-size: 12px; background: #eaf5ef; color: #1d6b45; padding: 3px 8px; border-radius: 6px; }
+
+.composer { display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid #e3e8ef; }
+.composer input {
+  flex: 1; padding: 12px 14px; font-size: 15px; border: 1px solid #cfd6df; border-radius: 10px; outline: none;
+}
+.composer input:focus { border-color: #2a7f8e; }
+.composer button {
+  padding: 0 22px; font-size: 15px; border: none; border-radius: 10px;
+  background: #2a7f8e; color: #fff; cursor: pointer;
+}
+.composer button:disabled { background: #b5bcc6; cursor: default; }

@@ -1,0 +1,60 @@
+<div class="chat">
+  <div class="toolbar">
+    <label class="toggle">
+      <input type="checkbox" [(ngModel)]="agentMode" [disabled]="busy()">
+      <span>Agent mode <small>(AI can call C# tools)</small></span>
+    </label>
+    <button type="button" class="link" (click)="clear()" [disabled]="busy() || messages().length === 0">
+      Clear
+    </button>
+  </div>
+
+  <div class="messages" #scroller>
+    @if (messages().length === 0) {
+      <div class="empty">
+        <h2>Ask CreditAssist</h2>
+        <p>Try one of these:</p>
+        @for (ex of examples; track ex) {
+          <button type="button" class="example" (click)="useExample(ex)">{{ ex }}</button>
+        }
+      </div>
+    }
+
+    @for (m of messages(); track $index) {
+      <div class="msg" [class.user]="m.role === 'user'" [class.error]="m.error">
+        <div class="bubble">
+          @if (m.text) {
+            {{ m.text }}
+          } @else {
+            <span class="typing">Thinking…</span>
+          }
+        </div>
+
+        @if (m.tools?.length) {
+          <div class="tools">
+            <span class="tools-label">Tools used</span>
+            @for (t of m.tools; track $index) {
+              <code>{{ t }}</code>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (busy() && agentMode()) {
+      <div class="msg">
+        <div class="bubble"><span class="typing">Calling tools…</span></div>
+      </div>
+    }
+  </div>
+
+  <form class="composer" (ngSubmit)="send()">
+    <input
+      name="question"
+      [(ngModel)]="question"
+      [disabled]="busy()"
+      placeholder="Ask about a loan, a PAN or a credit term…"
+      autocomplete="off">
+    <button type="submit" [disabled]="busy() || !question().trim()">Send</button>
+  </form>
+</div>
