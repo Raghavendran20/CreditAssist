@@ -1,5 +1,7 @@
 using CreditAssist.Core.AI;
 using CreditAssist.Core.Applicants;
+using CreditAssist.Core.Knowledge;
+using Microsoft.Extensions.AI;
 
 namespace CreditAssist.Api.Endpoints;
 
@@ -49,13 +51,34 @@ public static class AiEndpoints
             }
         });
 
-        // 5. Agent with tool calling (Day 4)
+        // 5. Agent with tool calling
         group.MapPost("/agent", async (AskRequest req, ICreditAssistant assistant, CancellationToken ct) =>
         {
             if (string.IsNullOrWhiteSpace(req.Question))
                 return Results.BadRequest(new { error = "Question is required." });
 
             return Results.Ok(await assistant.AskWithToolsAsync(req.Question, ct));
+        });
+
+        // 6. See what an embedding looks like (Day 5)
+        group.MapGet("/embed", async (string text, IEmbeddingGenerator<string, Embedding<float>> embedder, CancellationToken ct) =>
+        {
+            var vector = await embedder.GenerateVectorAsync(text, cancellationToken: ct);
+            return Results.Ok(new
+            {
+                text,
+                dimensions = vector.Length,
+                first5Values = vector.Span[..5].ToArray()
+            });
+        });
+
+        // 7. Semantic search over policy rules (Day 5)
+        group.MapGet("/policy/search", async (string q, IPolicySearch search, CancellationToken ct, int top = 3) =>
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return Results.BadRequest(new { error = "Query 'q' is required." });
+
+            return Results.Ok(await search.SearchAsync(q, Math.Clamp(top, 1, 10), ct));
         });
 
         return app;

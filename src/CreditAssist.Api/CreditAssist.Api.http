@@ -83,3 +83,15 @@ Content-Type: application/json
 {
   "question": "Check loan eligibility for PAN ZZZZZ9999Z."
 }
+
+### 9. What does an embedding look like?
+GET {{host}}/api/ai/embed?text=FOIR limit for personal loans
+
+### 10. Semantic search: "freelancer" finds the self-employed rules
+GET {{host}}/api/ai/policy/search?q=Can a freelancer get a personal loan?
+
+### 11. Semantic search: no shared keywords with the "bounces" rule
+GET {{host}}/api/ai/policy/search?q=My customer missed a few EMI payments recently
+
+### 12. Semantic search: top 1 only
+GET {{host}}/api/ai/policy/search?q=How much money can I borrow?&top=1
