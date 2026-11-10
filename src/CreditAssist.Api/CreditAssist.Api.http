@@ -8,7 +8,7 @@ Content-Type: application/json
   "question": "What is FOIR?"
 }
 
-### 2. Chat with history (it should remember the earlier context)
+### 2. Chat with history
 POST {{host}}/api/ai/chat
 Content-Type: application/json
 
@@ -20,10 +20,42 @@ Content-Type: application/json
   ]
 }
 
-### 3. Empty question (should return 400)
+### 3. Empty question (expect 400)
 POST {{host}}/api/ai/ask
 Content-Type: application/json
 
 {
   "question": ""
+}
+
+### 4. Strong applicant (expect Low risk)
+POST {{host}}/api/ai/assess
+Content-Type: application/json
+
+{
+  "name": "Priya Sharma",
+  "monthlyIncome": 120000,
+  "existingEmis": 10000,
+  "requestedLoanAmount": 500000,
+  "tenureMonths": 36,
+  "annualInterestRate": 12,
+  "cibilScore": 790,
+  "employmentType": "Salaried",
+  "yearsInCurrentJob": 5
+}
+
+### 5. Risky applicant (expect High risk)
+POST {{host}}/api/ai/assess
+Content-Type: application/json
+
+{
+  "name": "Arun Kumar",
+  "monthlyIncome": 45000,
+  "existingEmis": 18000,
+  "requestedLoanAmount": 400000,
+  "tenureMonths": 24,
+  "annualInterestRate": 14,
+  "cibilScore": 640,
+  "employmentType": "Self-employed",
+  "yearsInCurrentJob": 1
 }
